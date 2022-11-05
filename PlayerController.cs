@@ -1,4 +1,74 @@
-﻿using System;
+﻿=============================================================================
+Пример из хэлпа
+using UnityEngine;
+using System.Collections;
+
+public class ExampleClass : MonoBehaviour {
+    void Update() {
+        transform.RotateAround(Vector3.zero, Vector3.up, 20 * Time.deltaTime);
+    }
+}
+=============================================================================
+public static Vector3 RotatePointAroundPivot(Vector3 point, Vector3 pivot, Quaternion angle) {
+   return angle * ( point - pivot) + pivot;
+
+transform.position = 
+    RotatePointAroundPivot(transform.position,
+                           transform.parent.position,
+                           Quaternion.Euler(0, OrbitDegrees * Time.deltaTime, 0));
+==================================================
+из одного поста
+transform.RotateAround(sphereOne.transform.position, 
+        new Vector3(0, 1, 0), 100 * Time.deltaTime);
+или ------------
+transform.RotateAround(sphereOne.transform.position, sphereOne.transform.up, 100*Time.deltaTime);
+}
+==================================================
+3D
+transform.RotateAround(Vector3.zero, new Vector3(a + radius*Mathf.Cos (angle),
+                                                                               b + radius*Mathf.Sin (angle),
+                                                                               0f) * speed,
+                                      100 * Time.deltaTime);
+вот что получилось но объект летит по слишком большому радиусу(
+
+==================================================
+2D
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+ 
+public class poKrugu : MonoBehaviour
+{
+ 
+    [SerializeField]
+    Transform center;
+ 
+    [SerializeField]
+    float radius = 2f, angularSpeed = 2f;
+ 
+    float positionX, positionY, angle = 0f;
+ 
+ 
+    // Update is called once per frame
+    void Update()
+    {
+        positionX = center.position.x + Mathf.Cos(angle) * radius;
+        positionY = center.position.y + Mathf.Sin(angle) * radius;
+        transform.position = new Vector2(positionX, positionY);
+        angle = angle + Time.deltaTime * angularSpeed;
+ 
+        if (angle >= 360f)
+        {
+            angle = 0f;
+        }
+    }
+}
+=======================================================
+
+
+
+using System;
 using UnityEngine;
 
 
@@ -74,6 +144,52 @@ public class PlayerController : MonoBehaviour
 }
 
 
+<<<<<<< HEAD
+=======
+
+
+
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEditor;
+
+public class spaceship // : MonoBehaviour 
+{
+    public GameObject Spaceship;
+
+
+    public spaceship()
+    {
+        GameObject Spaceship = new GameObject();
+
+        Spaceship = ObjectFactory.CreatePrimitive(PrimitiveType.Cube);
+
+        Spaceship.name                  = "Spaceship";
+        Spaceship.transform.localScale  = new Vector3(0.009f, 0.004f, 0.006f);
+
+        Spaceship.transform.position    = Vector3.zero;
+        Spaceship.transform.position = new Vector3(0, 0, -1000);
+        Spaceship.transform.Rotate(new Vector3(0,45,0));
+
+        Renderer rendSpaceship = Spaceship.GetComponent<Renderer>();
+        rendSpaceship.material.color = Color.red;
+
+    }
+
+
+
+}
+
+
+
+
+
+
+
+
+>>>>>>> 6805a7a203d24c18121b45a929d3ac979ea88f62
 //  if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
 
 /*
