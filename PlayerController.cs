@@ -144,6 +144,8 @@ public class PlayerController : MonoBehaviour
 }
 
 
+<<<<<<< HEAD
+=======
 
 
 
@@ -187,9 +189,18 @@ public class spaceship // : MonoBehaviour
 
 
 
+>>>>>>> 6805a7a203d24c18121b45a929d3ac979ea88f62
 //  if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
 
 /*
+
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+
+
+
+
 using UnityEngine;
 using System.Collections;
 
