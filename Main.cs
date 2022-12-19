@@ -39,7 +39,7 @@ class Main : MonoBehaviour
         aud.playOnAwake = true;
 
      //   aud.clip = myClip;
-        aud.Play();
+     //   aud.Play();
 
     }
     void Start()
@@ -47,6 +47,8 @@ class Main : MonoBehaviour
 
         startTime = Time.time;
 
+
+        _ = new Planet.Create("A_00_00_00_00", -1f, 1f, 1f, new Vector3(0f, 0f, 0f), MainColor);
 
         //  Объект визуализации центра
         CENTRE = GameObject.CreatePrimitive(PrimitiveType.Sphere);
@@ -144,26 +146,24 @@ class Main : MonoBehaviour
         Camera.main.gameObject.AddComponent<MouseWheel>();
 
 
-        GameObject P000003 =  new Planet2();
+        _ = new Planet.Create("A_00_00_00_00", 0f, 2000f, 0f, new Vector3(0f, 0f, 0f), MainColor);
+        _ = new Planet.Create("P000001", -0.2f, 20f, 1f, new Vector3(0f, 0f, 1100f), MainColor);
+        _ = new Planet.Create("P000002", -1f, 80f, 1f, new Vector3(0f, 0f, 1400f), MainColor);
 
-        new Planet("P000000", 0f, 2000f, 0f, new Vector3(0f, 0f, 0f), MainColor);
-        new Planet("P000001", -0.2f, 20f, 1f, new Vector3(0f, 0f, 1100f), MainColor);
-        new Planet("P000002", -1f, 80f, 1f, new Vector3(0f, 0f, 1400f), MainColor);
+        _ = new Planet.Create("P000003", -3f, 60f, 1f, new Vector3(0f, 0f, -2400f), MainColor);
+        _ = new Planet.Create("P000103", -1f, 2f, 1f, new Vector3(0f, 0f, -2335f), MainColor);
+        _ = new Planet.Create("P000203", -2f, 2f, 1f, new Vector3(65f, 0f, -2400f), MainColor);
 
-        new Planet("P000003", -3f, 60f, 1f, new Vector3(0f, 0f, -2400f), MainColor);
-        new Planet("P000103", -1f, 2f, 1f, new Vector3(0f, 0f, -2335f), MainColor);
-        new Planet("P000203", -2f, 2f, 1f, new Vector3(65f, 0f, -2400f), MainColor);
+        _ = new Planet.Create("P000004", -1f, 30f, 1f, new Vector3(0f, 0f, 500f), MainColor);
 
-        new Planet("P000004", -1f, 30f, 1f, new Vector3(0f, 0f, 500f), MainColor);
+        _ = new Planet.Create("P000005", -0.3f, 300f, 1f, new Vector3(0f, 0f, -3000f), MainColor);
+        _ = new Planet.Create("P000105", -0.3f, 4f, 1f, new Vector3(0f, 0f, -2845f), MainColor);
+        _ = new Planet.Create("P000205", -0.4f, 2f, 1f, new Vector3(0f, 0f, -3155f), MainColor);
+        _ = new Planet.Create("P000305", -0.4f, 2f, 1f, new Vector3(160f, 0f, -3000f), MainColor);
 
-        new Planet("P000005", -0.3f, 300f, 1f, new Vector3(0f, 0f, -3000f), MainColor);
-        new Planet("P000105", -0.3f, 4f, 1f, new Vector3(0f, 0f, -2845f), MainColor);
-        new Planet("P000205", -0.4f, 2f, 1f, new Vector3(0f, 0f, -3155f), MainColor);
-        new Planet("P000305", -0.4f, 2f, 1f, new Vector3(160f, 0f, -3000f), MainColor);
-
-        new Planet("P000006", -0.2f, 200f, 1f, new Vector3(0f, 0f, 3700f), MainColor);
-        new Planet("P000007", -3.7f, 50.35f, 1f, new Vector3(0f, 0f, 4400f), MainColor);
-        new Planet("P000008", -2.8f, 50.9f, 1f, new Vector3(0f, 0f, 5300f), MainColor);
+        _ = new Planet.Create("P000006", -0.2f, 200f, 1f, new Vector3(0f, 0f, 3700f), MainColor);
+        _ = new Planet.Create("P000007", -3.7f, 50.35f, 1f, new Vector3(0f, 0f, 4400f), MainColor);
+        _ = new Planet.Create("P000008", -2.8f, 50.9f, 1f, new Vector3(0f, 0f, 5300f), MainColor);
 
 
         /*
