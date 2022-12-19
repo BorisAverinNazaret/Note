@@ -771,7 +771,7 @@ int day(){
 		cout << endl;
 		info();
 		cout << endl;
-
+		
 
 		//=== Праздник Новый год ============
 		if(RandYN(1)){
