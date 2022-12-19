@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+<<<<<<< HEAD
 using System.Numerics;
 using UnityEngine;
 using Vector3 = UnityEngine.Vector3;
@@ -61,6 +62,20 @@ public class Planet2 : MonoBehaviour
 
 
     // Start is called before the first frame update
+=======
+using UnityEngine;
+
+public class Planet2 : MonoBehaviour
+{
+    // Start is called before the first frame update
+
+
+    void planet2()
+    {
+
+    }
+
+>>>>>>> 678b230c07277d75df93244faa90a438b9fd79be
     void Start()
     {
 
@@ -69,7 +84,12 @@ public class Planet2 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+<<<<<<< HEAD
 
     }
 
+=======
+        
+    }
+>>>>>>> 678b230c07277d75df93244faa90a438b9fd79be
 }

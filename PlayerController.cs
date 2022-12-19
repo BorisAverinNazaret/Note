@@ -1,206 +1,142 @@
-﻿=============================================================================
-Пример из хэлпа
-using UnityEngine;
-using System.Collections;
-
-public class ExampleClass : MonoBehaviour {
-    void Update() {
-        transform.RotateAround(Vector3.zero, Vector3.up, 20 * Time.deltaTime);
-    }
-}
-=============================================================================
-public static Vector3 RotatePointAroundPivot(Vector3 point, Vector3 pivot, Quaternion angle) {
-   return angle * ( point - pivot) + pivot;
-
-transform.position = 
-    RotatePointAroundPivot(transform.position,
-                           transform.parent.position,
-                           Quaternion.Euler(0, OrbitDegrees * Time.deltaTime, 0));
-==================================================
-из одного поста
-transform.RotateAround(sphereOne.transform.position, 
-        new Vector3(0, 1, 0), 100 * Time.deltaTime);
-или ------------
-transform.RotateAround(sphereOne.transform.position, sphereOne.transform.up, 100*Time.deltaTime);
-}
-==================================================
-3D
-transform.RotateAround(Vector3.zero, new Vector3(a + radius*Mathf.Cos (angle),
-                                                                               b + radius*Mathf.Sin (angle),
-                                                                               0f) * speed,
-                                      100 * Time.deltaTime);
-вот что получилось но объект летит по слишком большому радиусу(
-
-==================================================
-2D
-
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+//using System.Diagnostics;
 using UnityEngine;
- 
-public class poKrugu : MonoBehaviour
-{
- 
-    [SerializeField]
-    Transform center;
- 
-    [SerializeField]
-    float radius = 2f, angularSpeed = 2f;
- 
-    float positionX, positionY, angle = 0f;
- 
- 
-    // Update is called once per frame
-    void Update()
-    {
-        positionX = center.position.x + Mathf.Cos(angle) * radius;
-        positionY = center.position.y + Mathf.Sin(angle) * radius;
-        transform.position = new Vector2(positionX, positionY);
-        angle = angle + Time.deltaTime * angularSpeed;
- 
-        if (angle >= 360f)
-        {
-            angle = 0f;
-        }
-    }
-}
-=======================================================
-
-
-
-using System;
-using UnityEngine;
-
-
-
+//using UnityEngine.Windows;
+using static Unity.IO.LowLevel.Unsafe.AsyncReadManagerMetrics;
 
 public class PlayerController : MonoBehaviour
 {
+    public Vector3 move;
+    public float sensitivity = 400.0f;
 
-    /*
-    1. Ход корабля
-    2. Вращение корабля
-    */
+    // Для вращения по осям  Speed и Step
+    public float RoSpeedX, RoSpeedY, RoSpeedZ = 0f;
+    public float RoStepX, RoStepY, RoStepZ = 0f;
 
+    // Для движения по осям  Speed и Step
+    public float MoSpeedX, MoSpeedY, MoSpeedZ = 0f;
+    public float MoStepX, MoStepY, MoStepZ = 0f;
 
+    // Если в update eсnь transform то пишем через это
+  //  public Transform Transform => GetComponent<Transform>();
 
-    public float speed = 1f;
-    public float sensitivity = 2f;
-
-
-    public float RotationSpeed = 0f;
-    public float dumpAmt = 2f;
-
-    [SerializeField] private Transform spaceship;
-
-
-
-    //  private float _rotationX=1f;
- //   private float ad_LR=0f, ws_FB=0f;
-
-    private void FixedUpdate()
+    private void Update()
     {
-        //      Debug.Log("rr");
+        // Пауза
+        if (Input.GetKeyDown(KeyCode.P)) Time.timeScale = Time.timeScale == 0 ? 1f : 0f;
 
+        // Tормоз
+        if (Input.GetKeyDown(KeyCode.BackQuote) || Input.GetKeyDown(KeyCode.Alpha0))
+            {
+                move = new Vector3(0f, 0f, 0f);
 
-        // тормоз
-        if (Input.GetKeyDown("`") || Input.GetKeyDown("0")) speed = 0f;
-
-
-        // Перевороты
-        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey("a")) RotationSpeed = RotationSpeed + 20f; // Math.Abs(RotationSpeed - 20f)
-        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey("d")) RotationSpeed = RotationSpeed - 20f;
-
-
-        if (RotationSpeed != 0f)
-            transform.Rotate((RotationSpeed > 0 ? Vector3.forward : Vector3.back * RotationSpeed) * (Time.deltaTime * dumpAmt), Space.Self);
-
-
+            RoSpeedX = RoSpeedY = RoSpeedZ = 0f;
+            RoStepX = RoStepY = RoStepZ = 0f;
+            MoSpeedX = MoSpeedY = MoSpeedZ = 0f;
+            MoStepX = MoStepY = MoStepZ = 0f;
+        }
 
 
 
-        //  transform.Rotate((Input.GetKey("e") ? Vector3.forward : Vector3.back * RotationSpeed) * (Time.deltaTime * dumpAmt), Space.Self);
+        // Выход из приложения через правый шифт и q
+        if (Input.GetKey(KeyCode.RightShift))
+            if (Input.GetKeyDown(KeyCode.Q)) { Debug.Log("Q"); Application.Quit(); }
+
+
+        if (Input.GetKey(KeyCode.LeftShift))     //  || Input.GetKey(KeyCode.RightShift)
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha1)) RoStepX = RoStepY = RoStepZ = 0f;
+            if (Input.GetKeyDown(KeyCode.Alpha2)) RoStepX = RoStepY = RoStepZ = 2f;
+            if (Input.GetKeyDown(KeyCode.Alpha3)) RoStepX = RoStepY = RoStepZ = 4f;
+            if (Input.GetKeyDown(KeyCode.Alpha4)) RoStepX = RoStepY = RoStepZ = 10f;
+
+            // Перевороты  расчет   
+            if (Input.GetKeyDown(KeyCode.A)) RoSpeedX += RoStepX; // RoStepX;
+            if (Input.GetKeyDown(KeyCode.D)) RoSpeedX -= RoStepX; //RoStepX;
+
+            if (Input.GetKeyDown(KeyCode.E)) RoSpeedY += RoStepY * 2; //RoStepY;
+            if (Input.GetKeyDown(KeyCode.Q)) RoSpeedY -= RoStepY * 2; //RoStepY;
+
+            if (Input.GetKeyDown(KeyCode.W)) RoSpeedZ += RoStepZ; //RoStepZ;
+            if (Input.GetKeyDown(KeyCode.S)) RoSpeedZ -= RoStepZ; //RoStepZ;
+        }
+        else
+        {
+            // выбор скорости
+            if (Input.GetKeyDown(KeyCode.Alpha1)) MoStepX = MoStepY = MoStepZ = 0f;
+            if (Input.GetKeyDown(KeyCode.Alpha2)) MoStepX = MoStepY = MoStepZ = 1f;
+            if (Input.GetKeyDown(KeyCode.Alpha3)) MoStepX = MoStepY = MoStepZ = 10f;
+            if (Input.GetKeyDown(KeyCode.Alpha4)) MoStepX = MoStepY = MoStepZ = 100f;
+            if (Input.GetKeyDown(KeyCode.Alpha5)) MoStepX = MoStepY = MoStepZ = 1000f;
+
+            // рaсчет для Vectora3
+            if (Input.GetKeyDown(KeyCode.D)) MoSpeedX += MoStepX;
+            if (Input.GetKeyDown(KeyCode.A)) MoSpeedX -= MoStepX;
+
+            if (Input.GetKeyDown(KeyCode.E)) MoSpeedY += MoStepY;
+            if (Input.GetKeyDown(KeyCode.Q)) MoSpeedY -= MoStepY;
+
+            if (Input.GetKeyDown(KeyCode.W)) MoSpeedZ += MoStepZ;
+            if (Input.GetKeyDown(KeyCode.S)) MoSpeedZ -= MoStepZ;
+
+            if (Input.GetKeyDown(KeyCode.PageUp))   { MoSpeedX *= 2f; MoSpeedY *= 2f; MoSpeedZ *= 2f; }
+            if (Input.GetKeyDown(KeyCode.PageDown)) { MoSpeedX /= 2f; MoSpeedY /= 2f; MoSpeedZ /= 2f; }
+
+            move = new Vector3(MoSpeedX, MoSpeedY, MoSpeedZ);
+        }
 
 
 
-        // if (Input.GetKey("e")) transform.Rotate((Vector3.back * RotationSpeed) * (Time.deltaTime * dumpAmt), Space.Self);
+        // Действие корпуса WSDA
+        if (move != new Vector3(0, 0, 0)) transform.Translate(move * Time.deltaTime);
+        // Поворот корпуса в лево право по Y
+        if (RoSpeedY != 0) transform.Rotate(new Vector3(0f, RoSpeedY, 0) * Time.deltaTime, Space.Self);
+
+        // Старый вариант движения корабля
+        // move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).normalized;
 
 
+                                                //     Debug.Log(move + "/          speed/" + speed + "/        RoSpeedXYZ/" + RoSpeedX + "/" + RoSpeedY + "/" + RoSpeedZ + "/              RoSpeedXYZ/ " + RoSpeedX + "/" + RoSpeedY + "/" + RoSpeedZ + "/");
+                                                // if(Input.anyKey || Input.anyKeyDown) Debug.Log($"{MoStepX}/{MoSpeedX}/{MoSpeedY}/{MoSpeedZ}          {RoStepX}/{RoSpeedX}/{RoSpeedY}/{RoSpeedZ}");
+                                                
+        // Перевороты  по Z
+        if (RoSpeedX != 0f) 
+            transform.Rotate(new Vector3(0f, 0f, RoSpeedX) * Time.deltaTime, Space.Self);
+        if (RoSpeedZ != 0f) 
+            transform.Rotate(new Vector3(RoSpeedZ, 0f, 0f) * Time.deltaTime, Space.Self);
+
+       // МЫШЬ Camera.main.
+       Camera.main.transform.Rotate(
+           Input.GetAxis("Mouse Y") * sensitivity * Time.deltaTime,
+           Input.GetAxis("Mouse X") * sensitivity * Time.deltaTime,
+           0,
+           Space.Self);
 
 
-        // ход
+        if (Input.GetKeyDown(KeyCode.Space))
+            Camera.main.transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0,0,0), 0.01f * Time.deltaTime);
 
-        if (Input.GetKeyDown("w"))  speed +=  20f;
-        if (Input.GetKeyDown("s"))  speed -= 20f;
+        //Camera.main.transform.Rotate(
+        //    Mathf.Clamp(Input.GetAxis("Mouse Y"), -1f, 1f) * sensitivity * Time.deltaTime,  //0,
+        //    Input.GetAxis("Mouse X") * sensitivity * Time.deltaTime,
+        //    0);
 
-
-        //     Vector3 move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).normalized;
-        //        transform.Translate((move * speed) * (Time.deltaTime * sensitivity));
-        if (speed != 0f)
-            transform.Translate(new Vector3(speed, 0f, RotationSpeed) * (Time.deltaTime * sensitivity));
-//        transform.Translate((new Vector3(speed, 0f, RotationSpeed) * speed) * (Time.deltaTime * sensitivity));
 
     }
 }
 
 
-<<<<<<< HEAD
-=======
-
-
-
-
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEditor;
-
-public class spaceship // : MonoBehaviour 
-{
-    public GameObject Spaceship;
-
-
-    public spaceship()
-    {
-        GameObject Spaceship = new GameObject();
-
-        Spaceship = ObjectFactory.CreatePrimitive(PrimitiveType.Cube);
-
-        Spaceship.name                  = "Spaceship";
-        Spaceship.transform.localScale  = new Vector3(0.009f, 0.004f, 0.006f);
-
-        Spaceship.transform.position    = Vector3.zero;
-        Spaceship.transform.position = new Vector3(0, 0, -1000);
-        Spaceship.transform.Rotate(new Vector3(0,45,0));
-
-        Renderer rendSpaceship = Spaceship.GetComponent<Renderer>();
-        rendSpaceship.material.color = Color.red;
-
-    }
-
-
-
-}
 
 
 
 
 
 
-
-
->>>>>>> 6805a7a203d24c18121b45a929d3ac979ea88f62
 //  if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
 
 /*
-
-///////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
-
-
-
-
 using UnityEngine;
 using System.Collections;
 
